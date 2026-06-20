@@ -17,7 +17,13 @@ export const PeopleFilters: React.FC<Props> = ({ peoples, onFilter }) => {
   function hangeChangeQuery(event: React.ChangeEvent<HTMLInputElement>) {
     const params = new URLSearchParams(serchParams);
 
-    params.set('query', event.target.value);
+    if (event.target.value.trim() === '') {
+      params.delete('query');
+
+      return setSerchParams(params);
+    }
+
+    params.set('query', event.target.value.trim());
     setSerchParams(params);
   }
 
@@ -66,7 +72,7 @@ export const PeopleFilters: React.FC<Props> = ({ peoples, onFilter }) => {
       filtered = filtered.filter(person => person.sex === sex);
     }
 
-    if (query) {
+    if (query.trim()) {
       filtered = filtered.filter(
         person =>
           person.name.toLowerCase().includes(query.trim().toLowerCase()) ||
