@@ -16,14 +16,14 @@ export const PeopleFilters: React.FC<Props> = ({ peoples, onFilter }) => {
 
   function hangeChangeQuery(event: React.ChangeEvent<HTMLInputElement>) {
     const params = new URLSearchParams(serchParams);
+    const trueQuery = event.target.value.trim();
 
-    if (event.target.value.trim() === '') {
+    if (!trueQuery) {
       params.delete('query');
-
-      return setSerchParams(params);
+    } else {
+      params.set('query', event.target.value.trim());
     }
 
-    params.set('query', event.target.value.trim());
     setSerchParams(params);
   }
 
@@ -54,7 +54,14 @@ export const PeopleFilters: React.FC<Props> = ({ peoples, onFilter }) => {
   }
 
   const handleClearAll = () => {
-    setSerchParams({});
+    const params = new URLSearchParams(serchParams);
+
+    params.delete('centuries');
+    params.delete('query');
+    params.delete('sex');
+    setSerchParams(params);
+
+    return;
   };
 
   useEffect(() => {
@@ -75,11 +82,18 @@ export const PeopleFilters: React.FC<Props> = ({ peoples, onFilter }) => {
     if (query.trim()) {
       filtered = filtered.filter(
         person =>
-          person.name.toLowerCase().includes(query.trim().toLowerCase()) ||
+          person.name
+            .toLowerCase()
+            .trim()
+            .includes(query.trim().toLowerCase()) ||
           person.fatherName
             ?.toLowerCase()
+            .trim()
             .includes(query.trim().toLowerCase()) ||
-          person.motherName?.toLowerCase().includes(query.trim().toLowerCase()),
+          person.motherName
+            ?.trim()
+            .toLowerCase()
+            .includes(query.trim().toLowerCase()),
       );
     }
 

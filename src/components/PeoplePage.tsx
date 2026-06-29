@@ -27,6 +27,10 @@ export const PeoplePage = () => {
         setChekError(TypeErroros.loadingError);
       });
   }, []);
+  const sotred = useCallback((newSorted: Person[]) => {
+    return setVisiblePeoples(newSorted);
+  }, []);
+
   const filterPerson = useCallback((newFilterTodo: Person[]) => {
     if (newFilterTodo.length === 0) {
       setChekError(TypeErroros.noPeopleSearch);
@@ -72,7 +76,7 @@ export const PeoplePage = () => {
               )}
 
               {chekError === TypeErroros.start && visiblePeoples.length > 0 && (
-                <PeopleTable peoples={visiblePeoples} onFilter={filterPerson} />
+                <PeopleTable peoples={visiblePeoples} onFilter={sotred} />
               )}
             </div>
           </div>
